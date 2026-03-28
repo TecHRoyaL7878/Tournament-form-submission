@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Competition Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0e1a;--surface:#111827;--surface2:#1a2235;--accent:#f97316;--accent2:#fb923c;
+    --blue:#3b82f6;--green:#22c55e;--red:#ef4444;--text:#f1f5f9;--muted:#94a3b8;
+    --border:rgba(255,255,255,0.08);--glow:rgba(249,115,22,0.25);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse 60% 50% at 70% 10%,rgba(249,115,22,.08) 0%,transparent 60%),
+               radial-gradient(ellipse 50% 40% at 10% 80%,rgba(59,130,246,.07) 0%,transparent 55%);
+    pointer-events:none;z-index:0;}
+  header{position:sticky;top:0;z-index:100;background:rgba(10,14,26,.9);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--accent);
+    display:flex;align-items:center;gap:10px;}
+  .logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--blue));
+    border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+  .sync-status{display:flex;align-items:center;gap:7px;font-size:.78rem;color:var(--muted);}
+  .sync-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.75);}}
+  .container{max-width:960px;margin:0 auto;padding:28px 20px;position:relative;z-index:1;}
+  .hero{text-align:center;margin-bottom:32px;}
+  .hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:800;
+    background:linear-gradient(135deg,var(--text) 30%,var(--accent));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    line-height:1.1;margin-bottom:7px;}
+  .hero p{color:var(--muted);font-size:.95rem;}
+  .tabs{display:flex;gap:4px;background:var(--surface);border-radius:13px;padding:4px;
+    margin-bottom:28px;border:1px solid var(--border);}
+  .tab-btn{flex:1;padding:11px 18px;background:transparent;border:none;border-radius:9px;
+    cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;
+    color:var(--muted);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;}
+  .tab-btn.active{background:var(--accent);color:#fff;box-shadow:0 4px 18px var(--glow);}
+  .tab-btn:hover:not(.active){color:var(--text);background:var(--surface2);}
+  .badge{background:rgba(255,255,255,.2);padding:2px 7px;border-radius:20px;font-size:.72rem;}
+  .tab-panel{display:none;}.tab-panel.active{display:block;animation:fadeUp .3s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .form-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:32px;}
+  .section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;color:var(--accent);
+    text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;display:flex;align-items:center;gap:7px;}
+  .form-section{margin-bottom:26px;padding-bottom:26px;border-bottom:1px solid var(--border);}
+  .form-section:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .span-2{grid-column:span 2;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  label{font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  label span{color:var(--accent);}
+  input,select{background:var(--surface2);border:1px solid var(--border);border-radius:9px;
+    padding:10px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.93rem;
+    transition:border-color .2s,box-shadow .2s;outline:none;width:100%;}
+  input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,.13);}
+  select option{background:var(--surface2);}
+  .btn-submit{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border:none;border-radius:11px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;
+    font-size:.95rem;color:#fff;display:flex;align-items:center;justify-content:center;gap:9px;
+    margin-top:22px;box-shadow:0 4px 22px var(--glow);transition:all .2s;}
+  .btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--glow);}
+  .btn-submit:disabled{opacity:.55;cursor:not-allowed;transform:none;}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:14px;text-align:center;}
+  .stat-card .num{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;color:var(--accent);}
+  .stat-card .lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  .controls-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .search-box{flex:1;min-width:180px;background:var(--surface);border:1px solid var(--border);
+    border-radius:9px;padding:9px 13px;color:var(--text);font-size:.88rem;outline:none;}
+  .search-box:focus{border-color:var(--accent);}
+  .filter-sel{background:var(--surface);border:1px solid var(--border);border-radius:9px;
+    padding:9px 12px;color:var(--text);font-size:.88rem;cursor:pointer;width:auto;}
+  .btn-refresh{background:var(--surface2);border:1px solid var(--border);border-radius:9px;
+    padding:9px 14px;color:var(--text);cursor:pointer;font-size:.88rem;
+    display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap;}
+  .btn-refresh:hover{border-color:var(--blue);color:var(--blue);}
+  .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:auto;}
+  table{width:100%;border-collapse:collapse;min-width:780px;}
+  thead th{background:var(--surface2);padding:11px 14px;font-family:'Syne',sans-serif;
+    font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--muted);text-align:left;white-space:nowrap;}
+  tbody tr{border-top:1px solid var(--border);transition:background .12s;}
+  tbody tr:hover{background:var(--surface2);}
+  tbody td{padding:11px 14px;font-size:.88rem;vertical-align:middle;}
+  .tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:.72rem;font-weight:600;}
+  .tag-school{background:rgba(59,130,246,.18);color:#93c5fd;}
+  .tag-college{background:rgba(168,85,247,.18);color:#d8b4fe;}
+  .tag-open{background:rgba(249,115,22,.18);color:#fdba74;}
+  .t-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.05);
+    padding:3px 9px;border-radius:20px;font-size:.75rem;}
+  .dot{width:7px;height:7px;border-radius:50%;}
+  .c0{background:#f97316;}.c1{background:#3b82f6;}.c2{background:#22c55e;}.c3{background:#a855f7;}.c4{background:#ec4899;}
+  .empty{text-align:center;padding:52px 20px;color:var(--muted);}
+  .empty .icon{font-size:2.8rem;margin-bottom:10px;}
+  .toast{position:fixed;bottom:26px;right:26px;background:var(--surface);border:1px solid var(--border);
+    border-radius:13px;padding:13px 18px;font-size:.88rem;z-index:9999;
+    display:flex;align-items:center;gap:9px;transform:translateY(70px);opacity:0;
+    transition:all .32s cubic-bezier(.175,.885,.32,1.275);max-width:320px;box-shadow:0 8px 28px rgba(0,0,0,.4);}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast.success{border-color:var(--green);}.toast.error{border-color:var(--red);}
+  .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;
+    border-radius:50%;animation:spin .7s linear infinite;display:inline-block;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @media(max-width:600px){
+    .grid-2{grid-template-columns:1fr;}.span-2{grid-column:span 1;}
+    .stats-row{grid-template-columns:1fr 1fr;}.form-card{padding:18px 14px;}
+    .tabs{flex-direction:column;}header{padding:11px 14px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><div class="logo-icon">🏆</div>CompetitionHub</div>
+  <div class="sync-status"><div class="sync-dot"></div><span>Live Sync</span></div>
+</header>
+
+<div class="container">
+  <div class="hero">
+    <h1>Competition Registration</h1>
+    <p>Fill the form — all teachers see entries in real time</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('register',this)">📝 Registration Form</button>
+    <button class="tab-btn" onclick="switchTab('participants',this)">
+      👥 Participants <span class="badge" id="countBadge">0</span>
+    </button>
+  </div>
+
+  <!-- FORM TAB -->
+  <div class="tab-panel active" id="panel-register">
+    <div class="form-card">
+
+      <div class="form-section">
+        <div class="section-title">🧑 Participant Details</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>First Name <span>*</span></label>
+            <input type="text" id="firstName" placeholder="e.g. Arjun" />
+          </div>
+          <div class="field">
+            <label>Last Name <span>*</span></label>
+            <input type="text" id="lastName" placeholder="e.g. Kumar" />
+          </div>
+          <div class="field">
+            <label>Date of Birth <span>*</span></label>
+            <input type="date" id="dob" />
+          </div>
+          <div class="field">
+            <label>Age</label>
+            <input type="number" id="age" placeholder="Auto-filled" readonly />
+          </div>
+          <div class="field">
+            <label>Gender <span>*</span></label>
+            <select id="gender">
+              <option value="">Select</option>
+              <option>Male</option><option>Female</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Class / Year <span>*</span></label>
+            <input type="text" id="classYear" placeholder="e.g. 10th / 2nd Year" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-title">📞 Contact & School</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Phone Number <span>*</span></label>
+            <input type="tel" id="phone" placeholder="+91 9XXXXXXXXX" />
+          </div>
+          <div class="field">
+            <label>Parent Phone</label>
+            <input type="tel" id="parentPhone" placeholder="+91 9XXXXXXXXX" />
+          </div>
+          <div class="field span-2">
+            <label>School / Institution <span>*</span></label>
+            <input type="text" id="institution" placeholder="e.g. St. Joseph's Higher Secondary School" />
+          </div>
+          <div class="field">
+            <label>Category <span>*</span></label>
+            <select id="category">
+              <option value="">Select</option>
+              <option>School (Class 1–5)</option>
+              <option>School (Class 6–8)</option>
+              <option>School (Class 9–10)</option>
+              <option>School (Class 11–12)</option>
+              <option>College / University</option>
+              <option>Open</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>City</label>
+            <input type="text" id="city" placeholder="e.g. Chennai" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-title">🏅 Event Details</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Event / Competition Name <span>*</span></label>
+            <input type="text" id="eventName" placeholder="e.g. Science Olympiad 2025" />
+          </div>
+          <div class="field">
+            <label>Event Type</label>
+            <select id="eventType">
+              <option value="">Select</option>
+              <option>Academic</option><option>Sports</option><option>Cultural</option>
+              <option>Science &amp; Technology</option><option>Arts &amp; Craft</option>
+              <option>Debate / Elocution</option><option>Quiz</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Chest / Reg Number</label>
+            <input type="text" id="chestNo" placeholder="e.g. CH-042" />
+          </div>
+          <div class="field">
+            <label>Payment Status</label>
+            <select id="paymentStatus">
+              <option value="">Select</option>
+              <option>Paid</option><option>Pending</option><option>Exempted</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-title">✍️ Teacher Entry</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Entered By (Teacher Name) <span>*</span></label>
+            <input type="text" id="teacherName" placeholder="Your name" />
+          </div>
+          <div class="field">
+            <label>Remarks</label>
+            <input type="text" id="remarks" placeholder="Optional notes" />
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="submitBtn" onclick="submitForm()">
+        <span id="submitText">Submit Participant</span>
+        <span>🚀</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- PARTICIPANTS TAB -->
+  <div class="tab-panel" id="panel-participants">
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="statTotal">0</div><div class="lbl">Total</div></div>
+      <div class="stat-card"><div class="num" id="statSchool">0</div><div class="lbl">School</div></div>
+      <div class="stat-card"><div class="num" id="statCollege">0</div><div class="lbl">College</div></div>
+      <div class="stat-card"><div class="num" id="statPaid">0</div><div class="lbl">Paid</div></div>
+    </div>
+    <div class="controls-bar">
+      <input class="search-box" type="text" id="searchBox" placeholder="🔍  Search name, school, chest no…" oninput="filterTable()" />
+      <select class="filter-sel" id="filterCat" onchange="filterTable()">
+        <option value="">All Categories</option>
+        <option>School (Class 1–5)</option><option>School (Class 6–8)</option>
+        <option>School (Class 9–10)</option><option>School (Class 11–12)</option>
+        <option>College / University</option><option>Open</option>
+      </select>
+      <select class="filter-sel" id="filterTeacher" onchange="filterTable()">
+        <option value="">All Teachers</option>
+      </select>
+      <button class="btn-refresh" onclick="loadParticipants()">🔄 Refresh</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Reg ID</th><th>Name</th><th>Class</th>
+            <th>Institution</th><th>Category</th><th>Event</th>
+            <th>Chest No</th><th>Phone</th><th>Payment</th><th>Teacher</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="11"><div class="empty"><div class="icon">📋</div><p>Click Refresh to load.</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span><span id="toastMsg">Done!</span>
+</div>
+
+<script>
+// ════════════════════════════════════════════════
+//  ▼▼  PASTE YOUR APPS SCRIPT WEB APP URL HERE  ▼▼
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQWdJcspfGAs0gso9WPEI5hhf_6pZEaF3lHrrXmFqWBXQzf7CFhr37zjp8CNFD4kyhDw/exec";
+//  ▲▲  PASTE YOUR APPS SCRIPT WEB APP URL HERE  ▲▲
+// ════════════════════════════════════════════════
+
+let allData = [];
+const teacherColors = {}, palette = ["c0","c1","c2","c3","c4"];
+let colorIdx = 0;
+
+window.onload = () => {
+  loadParticipants();
+  setInterval(loadParticipants, 30000);
+  document.getElementById("dob").addEventListener("change", function(){
+    const age = Math.floor((new Date() - new Date(this.value)) / (365.25*24*3600*1000));
+    document.getElementById("age").value = isNaN(age)||age<0 ? "" : age;
+  });
+};
+
+function switchTab(name, btn){
+  document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("panel-"+name).classList.add("active");
+  btn.classList.add("active");
+  if(name==="participants") loadParticipants();
+}
+
+async function submitForm(){
+  if(SCRIPT_URL==="PASTE_YOUR_APPS_SCRIPT_URL_HERE"){
+    showToast("⚠️ Set your Apps Script URL in the HTML file","error"); return;
+  }
+  const req = {firstName:"First Name",lastName:"Last Name",dob:"Date of Birth",
+    gender:"Gender",classYear:"Class / Year",phone:"Phone Number",
+    institution:"Institution",category:"Category",eventName:"Event Name",teacherName:"Teacher Name"};
+  for(const [id,label] of Object.entries(req)){
+    if(!g(id)){showToast(`⚠️ "${label}" is required`,"error");return;}
+  }
+  const payload = {
+    action:"addParticipant", timestamp:new Date().toISOString(),
+    firstName:g("firstName"), lastName:g("lastName"),
+    fullName:g("firstName")+" "+g("lastName"),
+    dob:g("dob"), age:g("age"), gender:g("gender"),
+    classYear:g("classYear"), phone:g("phone"), parentPhone:g("parentPhone"),
+    institution:g("institution"), category:g("category"), city:g("city"),
+    eventName:g("eventName"), eventType:g("eventType"),
+    chestNo:g("chestNo"), paymentStatus:g("paymentStatus"),
+    teacherName:g("teacherName"), remarks:g("remarks")
+  };
+  setBusy(true);
+  try{
+    const res  = await fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)});
+    const data = await res.json();
+    if(data.status==="success"){
+      showToast("🎉 Participant registered!","success");
+      clearForm(); setTimeout(loadParticipants,800);
+    } else showToast("❌ "+(data.message||"Error"),"error");
+  } catch(e){ showToast("❌ Network error. Check URL.","error"); }
+  setBusy(false);
+}
+
+function g(id){ return document.getElementById(id).value.trim(); }
+function setBusy(on){
+  document.getElementById("submitBtn").disabled=on;
+  document.getElementById("submitText").innerHTML=on?'<span class="spinner"></span> Submitting…':'Submit Participant';
+}
+function clearForm(){
+  ["firstName","lastName","dob","age","gender","classYear","phone","parentPhone",
+   "institution","category","city","eventName","eventType","chestNo","paymentStatus","remarks"]
+  .forEach(id=>{ document.getElementById(id).value=""; });
+}
+
+async function loadParticipants(){
+  if(SCRIPT_URL==="PASTE_YOUR_APPS_SCRIPT_URL_HERE") return;
+  try{
+    const res  = await fetch(SCRIPT_URL+"?action=getParticipants&t="+Date.now());
+    const data = await res.json();
+    if(data.status==="success"){
+      allData = data.participants||[];
+      renderTable(allData); updateStats(allData); updateTeacherFilter(allData);
+      document.getElementById("countBadge").textContent = allData.length;
+    }
+  } catch(e){ console.warn("Load failed",e); }
+}
+
+function renderTable(list){
+  const tb=document.getElementById("tbody");
+  if(!list.length){
+    tb.innerHTML=`<tr><td colspan="11"><div class="empty"><div class="icon">📋</div><p>No participants found.</p></div></td></tr>`;
+    return;
+  }
+  tb.innerHTML=list.map((p,i)=>{
+    if(!teacherColors[p.teacherName]) teacherColors[p.teacherName]=palette[colorIdx++%palette.length];
+    const catCls=p.category&&p.category.includes("College")?"tag-college":p.category&&p.category.includes("Open")?"tag-open":"tag-school";
+    const payClr=p.paymentStatus==="Paid"?"color:#4ade80":p.paymentStatus==="Pending"?"color:#fbbf24":"color:#94a3b8";
+    return `<tr>
+      <td style="color:var(--muted);font-size:.78rem">${i+1}</td>
+      <td><code style="background:rgba(255,255,255,.05);padding:2px 7px;border-radius:5px;font-size:.78rem">${p.registrationId||"—"}</code></td>
+      <td><strong>${p.fullName||"—"}</strong></td>
+      <td style="color:var(--muted);font-size:.83rem">${p.classYear||"—"}</td>
+      <td style="font-size:.83rem;color:var(--muted)">${p.institution||"—"}</td>
+      <td><span class="tag ${catCls}">${p.category||"—"}</span></td>
+      <td style="font-size:.83rem">${p.eventName||"—"}</td>
+      <td><code style="background:rgba(255,255,255,.05);padding:2px 7px;border-radius:5px;font-size:.78rem">${p.chestNo||"—"}</code></td>
+      <td style="font-size:.83rem">${p.phone||"—"}</td>
+      <td style="${payClr};font-weight:600;font-size:.83rem">${p.paymentStatus||"—"}</td>
+      <td><span class="t-chip"><span class="dot ${teacherColors[p.teacherName]||'c0'}"></span>${p.teacherName||"—"}</span></td>
+    </tr>`;
+  }).join("");
+}
+
+function updateStats(list){
+  document.getElementById("statTotal").textContent   = list.length;
+  document.getElementById("statSchool").textContent  = list.filter(p=>p.category&&p.category.includes("School")).length;
+  document.getElementById("statCollege").textContent = list.filter(p=>p.category&&p.category.includes("College")).length;
+  document.getElementById("statPaid").textContent    = list.filter(p=>p.paymentStatus==="Paid").length;
+}
+
+function updateTeacherFilter(list){
+  const teachers=[...new Set(list.map(p=>p.teacherName).filter(Boolean))];
+  const sel=document.getElementById("filterTeacher");
+  const cur=sel.value;
+  sel.innerHTML='<option value="">All Teachers</option>'+teachers.map(t=>`<option>${t}</option>`).join("");
+  sel.value=cur;
+}
+
+function filterTable(){
+  const q=document.getElementById("searchBox").value.toLowerCase();
+  const cat=document.getElementById("filterCat").value;
+  const tch=document.getElementById("filterTeacher").value;
+  renderTable(allData.filter(p=>{
+    const nm=(p.fullName||"").toLowerCase();
+    return (!q||nm.includes(q)||(p.institution||"").toLowerCase().includes(q)||(p.chestNo||"").toLowerCase().includes(q)||(p.phone||"").includes(q))
+      &&(!cat||p.category===cat)&&(!tch||p.teacherName===tch);
+  }));
+}
+
+function showToast(msg,type="success"){
+  const t=document.getElementById("toast");
+  document.getElementById("toastMsg").textContent=msg;
+  t.className="toast "+type+" show";
+  setTimeout(()=>t.classList.remove("show"),3500);
+}
+</script>
+</body>
+</html>
