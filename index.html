@@ -68,17 +68,21 @@
   .stat-card .num{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;color:var(--accent);}
   .stat-card .lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
   .controls-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
-  .search-box{flex:1;min-width:180px;background:var(--surface);border:1px solid var(--border);
+  .search-box{flex:2;min-width:180px;background:var(--surface);border:1px solid var(--border);
     border-radius:9px;padding:9px 13px;color:var(--text);font-size:.88rem;outline:none;}
   .search-box:focus{border-color:var(--accent);}
   .filter-sel{background:var(--surface);border:1px solid var(--border);border-radius:9px;
-    padding:9px 12px;color:var(--text);font-size:.88rem;cursor:pointer;width:auto;}
+    padding:9px 12px;color:var(--text);font-size:.88rem;cursor:pointer;width:auto;min-width:120px;}
   .btn-refresh{background:var(--surface2);border:1px solid var(--border);border-radius:9px;
     padding:9px 14px;color:var(--text);cursor:pointer;font-size:.88rem;
     display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap;}
   .btn-refresh:hover{border-color:var(--blue);color:var(--blue);}
+  .btn-danger{background:rgba(239, 68, 68, 0.1);border:1px solid var(--red);border-radius:9px;
+    padding:9px 14px;color:var(--red);cursor:pointer;font-size:.88rem;
+    display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap;font-weight:700;}
+  .btn-danger:hover{background:var(--red);color:white;}
   .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:auto;}
-  table{width:100%;border-collapse:collapse;min-width:780px;}
+  table{width:100%;border-collapse:collapse;min-width:850px;}
   thead th{background:var(--surface2);padding:11px 14px;font-family:'Syne',sans-serif;
     font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
     color:var(--muted);text-align:left;white-space:nowrap;}
@@ -94,7 +98,6 @@
   .dot{width:7px;height:7px;border-radius:50%;}
   .c0{background:#f97316;}.c1{background:#3b82f6;}.c2{background:#22c55e;}.c3{background:#a855f7;}.c4{background:#ec4899;}
   .empty{text-align:center;padding:52px 20px;color:var(--muted);}
-  .empty .icon{font-size:2.8rem;margin-bottom:10px;}
   .toast{position:fixed;bottom:26px;right:26px;background:var(--surface);border:1px solid var(--border);
     border-radius:13px;padding:13px 18px;font-size:.88rem;z-index:9999;
     display:flex;align-items:center;gap:9px;transform:translateY(70px);opacity:0;
@@ -103,11 +106,9 @@
   .toast.success{border-color:var(--green);}.toast.error{border-color:var(--red);}
   .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;
     border-radius:50%;animation:spin .7s linear infinite;display:inline-block;}
+  .btn-delete{background:var(--red);color:white;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700;transition:opacity 0.2s;}
+  .btn-delete:hover{opacity:0.8;}
   @keyframes spin{to{transform:rotate(360deg);}}
-  @media(max-width:600px){
-    .grid-2{grid-template-columns:1fr;}.span-2{grid-column:span 1;}
-    .stats-row{grid-template-columns:1fr 1fr;}.form-card{padding:18px 14px;}
-    .tabs{flex-direction:column;}header{padding:11px 14px;}}
 </style>
 </head>
 <body>
@@ -130,129 +131,49 @@
     </button>
   </div>
 
-  <!-- FORM TAB -->
   <div class="tab-panel active" id="panel-register">
     <div class="form-card">
-
       <div class="form-section">
         <div class="section-title">🧑 Participant Details</div>
         <div class="grid-2">
-          <div class="field">
-            <label>First Name <span>*</span></label>
-            <input type="text" id="firstName" placeholder="e.g. Arjun" />
-          </div>
-          <div class="field">
-            <label>Last Name <span>*</span></label>
-            <input type="text" id="lastName" placeholder="e.g. Kumar" />
-          </div>
-          <div class="field">
-            <label>Date of Birth <span>*</span></label>
-            <input type="date" id="dob" />
-          </div>
-          <div class="field">
-            <label>Age</label>
-            <input type="number" id="age" placeholder="Auto-filled" readonly />
-          </div>
-          <div class="field">
-            <label>Gender <span>*</span></label>
-            <select id="gender">
-              <option value="">Select</option>
-              <option>Male</option><option>Female</option><option>Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Class / Year <span>*</span></label>
-            <input type="text" id="classYear" placeholder="e.g. 10th / 2nd Year" />
-          </div>
+          <div class="field"><label>First Name <span>*</span></label><input type="text" id="firstName" placeholder="e.g. Arjun" /></div>
+          <div class="field"><label>Last Name <span>*</span></label><input type="text" id="lastName" placeholder="e.g. Kumar" /></div>
+          <div class="field"><label>Date of Birth <span>*</span></label><input type="date" id="dob" /></div>
+          <div class="field"><label>Age</label><input type="number" id="age" placeholder="Auto-filled" readonly /></div>
+          <div class="field"><label>Gender <span>*</span></label><select id="gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+          <div class="field"><label>Class / Year <span>*</span></label><input type="text" id="classYear" placeholder="e.g. 10th / 2nd Year" /></div>
         </div>
       </div>
-
       <div class="form-section">
         <div class="section-title">📞 Contact & School</div>
         <div class="grid-2">
-          <div class="field">
-            <label>Phone Number <span>*</span></label>
-            <input type="tel" id="phone" placeholder="+91 9XXXXXXXXX" />
-          </div>
-          <div class="field">
-            <label>Parent Phone</label>
-            <input type="tel" id="parentPhone" placeholder="+91 9XXXXXXXXX" />
-          </div>
-          <div class="field span-2">
-            <label>School / Institution <span>*</span></label>
-            <input type="text" id="institution" placeholder="e.g. St. Joseph's Higher Secondary School" />
-          </div>
-          <div class="field">
-            <label>Category <span>*</span></label>
-            <select id="category">
-              <option value="">Select</option>
-              <option>School (Class 1–5)</option>
-              <option>School (Class 6–8)</option>
-              <option>School (Class 9–10)</option>
-              <option>School (Class 11–12)</option>
-              <option>College / University</option>
-              <option>Open</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>City</label>
-            <input type="text" id="city" placeholder="e.g. Chennai" />
-          </div>
+          <div class="field"><label>Phone Number <span>*</span></label><input type="tel" id="phone" placeholder="+91 9XXXXXXXXX" /></div>
+          <div class="field"><label>Parent Phone</label><input type="tel" id="parentPhone" placeholder="+91 9XXXXXXXXX" /></div>
+          <div class="field span-2"><label>School / Institution <span>*</span></label><input type="text" id="institution" placeholder="e.g. School Name" /></div>
+          <div class="field"><label>Category <span>*</span></label><select id="category"><option value="">Select</option><option>School (Class 1–5)</option><option>School (Class 6–8)</option><option>School (Class 9–10)</option><option>School (Class 11–12)</option><option>College / University</option><option>Open</option></select></div>
+          <div class="field"><label>City</label><input type="text" id="city" placeholder="e.g. Chennai" /></div>
         </div>
       </div>
-
       <div class="form-section">
         <div class="section-title">🏅 Event Details</div>
         <div class="grid-2">
-          <div class="field">
-            <label>Event / Competition Name <span>*</span></label>
-            <input type="text" id="eventName" placeholder="e.g. Science Olympiad 2025" />
-          </div>
-          <div class="field">
-            <label>Event Type</label>
-            <select id="eventType">
-              <option value="">Select</option>
-              <option>Academic</option><option>Sports</option><option>Cultural</option>
-              <option>Science &amp; Technology</option><option>Arts &amp; Craft</option>
-              <option>Debate / Elocution</option><option>Quiz</option><option>Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Chest / Reg Number</label>
-            <input type="text" id="chestNo" placeholder="e.g. CH-042" />
-          </div>
-          <div class="field">
-            <label>Payment Status</label>
-            <select id="paymentStatus">
-              <option value="">Select</option>
-              <option>Paid</option><option>Pending</option><option>Exempted</option>
-            </select>
-          </div>
+          <div class="field"><label>Event Name <span>*</span></label><input type="text" id="eventName" placeholder="e.g. Science Olympiad" /></div>
+          <div class="field"><label>Event Type</label><select id="eventType"><option value="">Select</option><option>Academic</option><option>Sports</option><option>Cultural</option><option>Other</option></select></div>
+          <div class="field"><label>Chest / Reg Number</label><input type="text" id="chestNo" placeholder="e.g. CH-042" /></div>
+          <div class="field"><label>Payment Status</label><select id="paymentStatus"><option value="">Select</option><option>Paid</option><option>Pending</option><option>Exempted</option></select></div>
         </div>
       </div>
-
       <div class="form-section">
         <div class="section-title">✍️ Teacher Entry</div>
         <div class="grid-2">
-          <div class="field">
-            <label>Entered By (Teacher Name) <span>*</span></label>
-            <input type="text" id="teacherName" placeholder="Your name" />
-          </div>
-          <div class="field">
-            <label>Remarks</label>
-            <input type="text" id="remarks" placeholder="Optional notes" />
-          </div>
+          <div class="field"><label>Teacher Name <span>*</span></label><input type="text" id="teacherName" placeholder="Your name" /></div>
+          <div class="field"><label>Remarks</label><input type="text" id="remarks" placeholder="Optional notes" /></div>
         </div>
       </div>
-
-      <button class="btn-submit" id="submitBtn" onclick="submitForm()">
-        <span id="submitText">Submit Participant</span>
-        <span>🚀</span>
-      </button>
+      <button class="btn-submit" id="submitBtn" onclick="submitForm()"><span id="submitText">Submit Participant</span> 🚀</button>
     </div>
   </div>
 
-  <!-- PARTICIPANTS TAB -->
   <div class="tab-panel" id="panel-participants">
     <div class="stats-row">
       <div class="stat-card"><div class="num" id="statTotal">0</div><div class="lbl">Total</div></div>
@@ -261,30 +182,21 @@
       <div class="stat-card"><div class="num" id="statPaid">0</div><div class="lbl">Paid</div></div>
     </div>
     <div class="controls-bar">
-      <input class="search-box" type="text" id="searchBox" placeholder="🔍  Search name, school, chest no…" oninput="filterTable()" />
-      <select class="filter-sel" id="filterCat" onchange="filterTable()">
-        <option value="">All Categories</option>
-        <option>School (Class 1–5)</option><option>School (Class 6–8)</option>
-        <option>School (Class 9–10)</option><option>School (Class 11–12)</option>
-        <option>College / University</option><option>Open</option>
-      </select>
-      <select class="filter-sel" id="filterTeacher" onchange="filterTable()">
-        <option value="">All Teachers</option>
-      </select>
+      <input class="search-box" type="text" id="searchBox" placeholder="🔍 Search..." oninput="filterTable()" />
+      <select class="filter-sel" id="filterEvent" onchange="filterTable()"><option value="">All Events</option></select>
+      <select class="filter-sel" id="filterCat" onchange="filterTable()"><option value="">All Categories</option><option>School (Class 1–5)</option><option>School (Class 6–8)</option><option>School (Class 9–10)</option><option>School (Class 11–12)</option><option>College / University</option><option>Open</option></select>
+      <select class="filter-sel" id="filterTeacher" onchange="filterTable()"><option value="">All Teachers</option></select>
       <button class="btn-refresh" onclick="loadParticipants()">🔄 Refresh</button>
+      <button class="btn-danger" onclick="deleteAllEntries()">🗑️ Delete All</button>
     </div>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>#</th><th>Reg ID</th><th>Name</th><th>Class</th>
-            <th>Institution</th><th>Category</th><th>Event</th>
-            <th>Chest No</th><th>Phone</th><th>Payment</th><th>Teacher</th>
+            <th>#</th><th>Reg ID</th><th>Name</th><th>Class</th><th>Institution</th><th>Category</th><th>Event</th><th>Chest No</th><th>Phone</th><th>Status</th><th>Teacher</th><th>Action</th>
           </tr>
         </thead>
-        <tbody id="tbody">
-          <tr><td colspan="11"><div class="empty"><div class="icon">📋</div><p>Click Refresh to load.</p></div></td></tr>
-        </tbody>
+        <tbody id="tbody"></tbody>
       </table>
     </div>
   </div>
@@ -295,11 +207,7 @@
 </div>
 
 <script>
-// ════════════════════════════════════════════════
-//  ▼▼  PASTE YOUR APPS SCRIPT WEB APP URL HERE  ▼▼
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbztLCgptnD9L7sJJR3w6KWiw6uZUZFBmIjnUnH4KkYSMKtfiC9DabqUugMavwXLSnIG/exec";
-//  ▲▲  PASTE YOUR APPS SCRIPT WEB APP URL HERE  ▲▲
-// ════════════════════════════════════════════════
 
 let allData = [];
 const teacherColors = {}, palette = ["c0","c1","c2","c3","c4"];
@@ -323,119 +231,133 @@ function switchTab(name, btn){
 }
 
 async function submitForm(){
-  if(SCRIPT_URL==="PASTE_YOUR_APPS_SCRIPT_URL_HERE"){
-    showToast("⚠️ Set your Apps Script URL in the HTML file","error"); return;
-  }
-  const req = {firstName:"First Name",lastName:"Last Name",dob:"Date of Birth",
-    gender:"Gender",classYear:"Class / Year",phone:"Phone Number",
-    institution:"Institution",category:"Category",eventName:"Event Name",teacherName:"Teacher Name"};
+  const req = {firstName:"First Name",lastName:"Last Name",dob:"Date of Birth",gender:"Gender",classYear:"Class / Year",phone:"Phone Number",institution:"Institution",category:"Category",eventName:"Event Name",teacherName:"Teacher Name"};
   for(const [id,label] of Object.entries(req)){
-    if(!g(id)){showToast(`⚠️ "${label}" is required`,"error");return;}
+    if(!document.getElementById(id).value.trim()){showToast(`⚠️ "${label}" is required`,"error");return;}
   }
   const payload = {
-    action:"addParticipant", timestamp:new Date().toISOString(),
-    firstName:g("firstName"), lastName:g("lastName"),
-    fullName:g("firstName")+" "+g("lastName"),
-    dob:g("dob"), age:g("age"), gender:g("gender"),
-    classYear:g("classYear"), phone:g("phone"), parentPhone:g("parentPhone"),
-    institution:g("institution"), category:g("category"), city:g("city"),
-    eventName:g("eventName"), eventType:g("eventType"),
-    chestNo:g("chestNo"), paymentStatus:g("paymentStatus"),
-    teacherName:g("teacherName"), remarks:g("remarks")
+    action:"addParticipant", 
+    fullName:document.getElementById("firstName").value + " " + document.getElementById("lastName").value,
+    classYear:document.getElementById("classYear").value,
+    institution:document.getElementById("institution").value,
+    category:document.getElementById("category").value,
+    eventName:document.getElementById("eventName").value,
+    phone:document.getElementById("phone").value,
+    paymentStatus:document.getElementById("paymentStatus").value,
+    teacherName:document.getElementById("teacherName").value,
+    chestNo:document.getElementById("chestNo").value || ""
   };
   setBusy(true);
   try{
-    const res  = await fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)});
+    const res = await fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)});
     const data = await res.json();
     if(data.status==="success"){
-      showToast("🎉 Participant registered!","success");
-      clearForm(); setTimeout(loadParticipants,800);
-    } else showToast("❌ "+(data.message||"Error"),"error");
-  } catch(e){ showToast("❌ Network error. Check URL.","error"); }
+      showToast("🎉 Registered!","success");
+      ["firstName","lastName","dob","age","gender","classYear","phone","parentPhone","institution","category","city","eventName","eventType","chestNo","paymentStatus","remarks"].forEach(id=>{document.getElementById(id).value="";});
+      setTimeout(loadParticipants,800);
+    }
+  } catch(e){ showToast("❌ Error","error"); }
   setBusy(false);
 }
 
-function g(id){ return document.getElementById(id).value.trim(); }
 function setBusy(on){
   document.getElementById("submitBtn").disabled=on;
-  document.getElementById("submitText").innerHTML=on?'<span class="spinner"></span> Submitting…':'Submit Participant';
-}
-function clearForm(){
-  ["firstName","lastName","dob","age","gender","classYear","phone","parentPhone",
-   "institution","category","city","eventName","eventType","chestNo","paymentStatus","remarks"]
-  .forEach(id=>{ document.getElementById(id).value=""; });
+  document.getElementById("submitText").innerHTML=on?'<span class="spinner"></span>...':'Submit Participant';
 }
 
 async function loadParticipants(){
-  if(SCRIPT_URL==="PASTE_YOUR_APPS_SCRIPT_URL_HERE") return;
   try{
-    const res  = await fetch(SCRIPT_URL+"?action=getParticipants&t="+Date.now());
+    const res = await fetch(SCRIPT_URL+"?action=getParticipants&t="+Date.now());
     const data = await res.json();
     if(data.status==="success"){
       allData = data.participants||[];
-      renderTable(allData); updateStats(allData); updateTeacherFilter(allData);
+      renderTable(allData);
+      updateStats(allData);
+      updateFilters(allData);
       document.getElementById("countBadge").textContent = allData.length;
     }
-  } catch(e){ console.warn("Load failed",e); }
+  } catch(e){ console.warn(e); }
 }
 
 function renderTable(list){
   const tb=document.getElementById("tbody");
   if(!list.length){
-    tb.innerHTML=`<tr><td colspan="11"><div class="empty"><div class="icon">📋</div><p>No participants found.</p></div></td></tr>`;
+    tb.innerHTML=`<tr><td colspan="12" class="empty">No participants found.</td></tr>`;
     return;
   }
   tb.innerHTML=list.map((p,i)=>{
     if(!teacherColors[p.teacherName]) teacherColors[p.teacherName]=palette[colorIdx++%palette.length];
     const catCls=p.category&&p.category.includes("College")?"tag-college":p.category&&p.category.includes("Open")?"tag-open":"tag-school";
-    const payClr=p.paymentStatus==="Paid"?"color:#4ade80":p.paymentStatus==="Pending"?"color:#fbbf24":"color:#94a3b8";
     return `<tr>
-      <td style="color:var(--muted);font-size:.78rem">${i+1}</td>
-      <td><code style="background:rgba(255,255,255,.05);padding:2px 7px;border-radius:5px;font-size:.78rem">${p.registrationId||"—"}</code></td>
+      <td>${i+1}</td>
+      <td><code>${p.registrationId||"—"}</code></td>
       <td><strong>${p.fullName||"—"}</strong></td>
-      <td style="color:var(--muted);font-size:.83rem">${p.classYear||"—"}</td>
-      <td style="font-size:.83rem;color:var(--muted)">${p.institution||"—"}</td>
+      <td>${p.classYear||"—"}</td>
+      <td>${p.institution||"—"}</td>
       <td><span class="tag ${catCls}">${p.category||"—"}</span></td>
-      <td style="font-size:.83rem">${p.eventName||"—"}</td>
-      <td><code style="background:rgba(255,255,255,.05);padding:2px 7px;border-radius:5px;font-size:.78rem">${p.chestNo||"—"}</code></td>
-      <td style="font-size:.83rem">${p.phone||"—"}</td>
-      <td style="${payClr};font-weight:600;font-size:.83rem">${p.paymentStatus||"—"}</td>
-      <td><span class="t-chip"><span class="dot ${teacherColors[p.teacherName]||'c0'}"></span>${p.teacherName||"—"}</span></td>
+      <td>${p.eventName||"—"}</td>
+      <td><code>${p.chestNo||"—"}</code></td>
+      <td>${p.phone||"—"}</td>
+      <td>${p.paymentStatus||"—"}</td>
+      <td><span class="t-chip"><span class="dot ${teacherColors[p.teacherName]}"></span>${p.teacherName}</span></td>
+      <td><button class="btn-delete" onclick="deleteEntry('${p.registrationId}')">Delete</button></td>
     </tr>`;
   }).join("");
 }
 
-function updateStats(list){
-  document.getElementById("statTotal").textContent   = list.length;
-  document.getElementById("statSchool").textContent  = list.filter(p=>p.category&&p.category.includes("School")).length;
-  document.getElementById("statCollege").textContent = list.filter(p=>p.category&&p.category.includes("College")).length;
-  document.getElementById("statPaid").textContent    = list.filter(p=>p.paymentStatus==="Paid").length;
-}
-
-function updateTeacherFilter(list){
+function updateFilters(list){
   const teachers=[...new Set(list.map(p=>p.teacherName).filter(Boolean))];
-  const sel=document.getElementById("filterTeacher");
-  const cur=sel.value;
-  sel.innerHTML='<option value="">All Teachers</option>'+teachers.map(t=>`<option>${t}</option>`).join("");
-  sel.value=cur;
+  const events=[...new Set(list.map(p=>p.eventName).filter(Boolean))];
+  const tSel=document.getElementById("filterTeacher"), eSel=document.getElementById("filterEvent");
+  const curT=tSel.value, curE=eSel.value;
+  tSel.innerHTML='<option value="">All Teachers</option>'+teachers.map(t=>`<option>${t}</option>`).join("");
+  eSel.innerHTML='<option value="">All Events</option>'+events.map(e=>`<option>${e}</option>`).join("");
+  tSel.value=curT; eSel.value=curE;
 }
 
 function filterTable(){
   const q=document.getElementById("searchBox").value.toLowerCase();
-  const cat=document.getElementById("filterCat").value;
-  const tch=document.getElementById("filterTeacher").value;
+  const cat=document.getElementById("filterCat").value, tch=document.getElementById("filterTeacher").value, evt=document.getElementById("filterEvent").value;
   renderTable(allData.filter(p=>{
-    const nm=(p.fullName||"").toLowerCase();
-    return (!q||nm.includes(q)||(p.institution||"").toLowerCase().includes(q)||(p.chestNo||"").toLowerCase().includes(q)||(p.phone||"").includes(q))
-      &&(!cat||p.category===cat)&&(!tch||p.teacherName===tch);
+    return (!q || (p.fullName||"").toLowerCase().includes(q) || (p.institution||"").toLowerCase().includes(q))
+      && (!cat || p.category === cat) && (!tch || p.teacherName === tch) && (!evt || p.eventName === evt);
   }));
+}
+
+async function deleteEntry(id){
+  if(!confirm("Delete this participant?")) return;
+  showToast("Deleting...", "error");
+  try {
+    const res = await fetch(SCRIPT_URL, {method: "POST", body: JSON.stringify({ action: "deleteParticipant", registrationId: id })});
+    const result = await res.json();
+    if (result.status === "success") { showToast("Deleted!", "success"); loadParticipants(); }
+  } catch (e) { showToast("Error", "error"); }
+}
+
+async function deleteAllEntries(){
+  if(!confirm("⚠️ எச்சரிக்கை! அனைத்து தரவுகளையும் நீக்க வேண்டுமா? (Delete ALL data?)")) return;
+  if(!confirm("கடைசியாக ஒருமுறை உறுதிப்படுத்தவும். இதை மீண்டும் கொண்டு வர முடியாது!")) return;
+  
+  showToast("Deleting All Data...", "error");
+  try {
+    const res = await fetch(SCRIPT_URL, {method: "POST", body: JSON.stringify({ action: "deleteAll" })});
+    const result = await res.json();
+    if (result.status === "success") { showToast("All Data Deleted!", "success"); loadParticipants(); }
+  } catch (e) { showToast("Network Error", "error"); }
+}
+
+function updateStats(list){
+  document.getElementById("statTotal").textContent = list.length;
+  document.getElementById("statSchool").textContent = list.filter(p=>p.category&&p.category.includes("School")).length;
+  document.getElementById("statCollege").textContent = list.filter(p=>p.category&&p.category.includes("College")).length;
+  document.getElementById("statPaid").textContent = list.filter(p=>p.paymentStatus==="Paid").length;
 }
 
 function showToast(msg,type="success"){
   const t=document.getElementById("toast");
   document.getElementById("toastMsg").textContent=msg;
   t.className="toast "+type+" show";
-  setTimeout(()=>t.classList.remove("show"),3500);
+  setTimeout(()=>t.classList.remove("show"),3000);
 }
 </script>
 </body>
